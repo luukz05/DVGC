@@ -1,0 +1,47 @@
+{
+  "expo": {
+    "name": "DVGC MOBILE",
+    "slug": "proj-tcc",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "andoid.userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "notification": {
+      "icon": "./assets/icon.png",
+      "color": "#000000"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ldv005.projtcc"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#00000"
+      },
+      "package": "com.ldv005.projtcc"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "a1fd402c-6ecf-4883-8a51-c467cfc9a5ac"
+      }
+    },
+    "build": {
+      "releaseChannel": "default",
+      "android": {
+        "buildType": "apk"
+      }
+    }
+  }
+}

@@ -98,19 +98,6 @@ Este projeto marcou minha **primeira experiência prática integrando software e
 
 ---
 
-## 📸 Imagens do Projeto (sugestão)
-
-> Adicione aqui imagens do protótipo físico, prints do app, fluxogramas ou diagrama de arquitetura.
-
----
-
-## 📃 Licença
-
-Este projeto é de uso acadêmico. Para uso comercial ou colaboração externa, entre em contato.
-
-
----
-
 ## 🧠 Backend – API RESTful com Node.js e MySQL
 
 A API foi desenvolvida com **Node.js**, utilizando os módulos **Express**, **MySQL2**, **body-parser**, **bcrypt**, **crypto** e **jsonwebtoken**.
@@ -124,28 +111,6 @@ A API foi desenvolvida com **Node.js**, utilizando os módulos **Express**, **My
 | `/alert`         | POST   | Insere um novo alerta de gás (intensidade) |
 | `/login`         | POST   | Autentica usuário com `username` e `password` |
 
-### 🔒 Segurança
-
-- Usa `JWT` para geração de tokens após login bem-sucedido.
-- A chave secreta é gerada aleatoriamente a cada inicialização com `crypto.randomBytes`.
-
-> ⚠️ **Atenção:** No trecho abaixo, a senha está sendo comparada diretamente com o valor no banco (sem hash). Isso não é seguro.  
-> Para produção, é recomendado utilizar `bcrypt.compareSync()` com senhas armazenadas como hashes.
-
-```js
-const query = "SELECT * FROM usuarios WHERE username = ? AND password = ?";
-```
-
-Sugestão segura:
-```js
-const query = "SELECT * FROM usuarios WHERE username = ?";
-db.query(query, [username], (err, results) => {
-  if (results.length === 0 || !bcrypt.compareSync(password, results[0].password)) {
-    return res.status(401).json({ success: false, error: "Usuário ou senha incorretos" });
-  }
-  // token...
-});
-```
 
 ### 🌐 Conexão com o Banco de Dados
 
@@ -178,12 +143,4 @@ node index.js
 2. O servidor estará disponível no IP local, por exemplo:
 ```
 Servidor rodando em http://192.168.1.100:3000
-```
-
-### 💡 Extras
-
-- Função para detectar o IP local automaticamente com o módulo `os`
-- Comando útil para limpar a tabela de alertas:
-```sql
-TRUNCATE TABLE gas_alerts;
 ```

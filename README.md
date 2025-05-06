@@ -1,5 +1,5 @@
 
-# DVGC – Detector de Vazamento de Gás Caseiro
+# DVGC – Detector de Vazamento de Gás de Cozinha
 
 Projeto desenvolvido em grupo como parte de uma disciplina acadêmica com foco no tema **“Smart Cities”**. O **DVGC** (Detector de Vazamento de Gás Caseiro) é uma solução acessível e inovadora voltada à **segurança doméstica**, especialmente na **detecção de vazamentos de gás GLP**, um combustível amplamente utilizado em residências brasileiras.
 
@@ -83,6 +83,10 @@ npm install
 npm start
 ```
 
+> Certifique-se de que o MySQL está ativo e configure as variáveis de conexão no arquivo `.env`.
+
+---
+
 ## 👨‍💻 Responsabilidades Individuais
 
 Este projeto marcou minha **primeira experiência prática integrando software e hardware**. Minhas contribuições principais:
@@ -93,3 +97,93 @@ Este projeto marcou minha **primeira experiência prática integrando software e
 - Participação ativa na montagem e testes do protótipo
 
 ---
+
+## 📸 Imagens do Projeto (sugestão)
+
+> Adicione aqui imagens do protótipo físico, prints do app, fluxogramas ou diagrama de arquitetura.
+
+---
+
+## 📃 Licença
+
+Este projeto é de uso acadêmico. Para uso comercial ou colaboração externa, entre em contato.
+
+
+---
+
+## 🧠 Backend – API RESTful com Node.js e MySQL
+
+A API foi desenvolvida com **Node.js**, utilizando os módulos **Express**, **MySQL2**, **body-parser**, **bcrypt**, **crypto** e **jsonwebtoken**.
+
+### 📌 Funcionalidades da API
+
+| Rota             | Método | Descrição |
+|------------------|--------|-----------|
+| `/`              | GET    | Mensagem simples indicando o uso da API |
+| `/alert`         | GET    | Retorna todos os registros da tabela `gas_alerts` |
+| `/alert`         | POST   | Insere um novo alerta de gás (intensidade) |
+| `/login`         | POST   | Autentica usuário com `username` e `password` |
+
+### 🔒 Segurança
+
+- Usa `JWT` para geração de tokens após login bem-sucedido.
+- A chave secreta é gerada aleatoriamente a cada inicialização com `crypto.randomBytes`.
+
+> ⚠️ **Atenção:** No trecho abaixo, a senha está sendo comparada diretamente com o valor no banco (sem hash). Isso não é seguro.  
+> Para produção, é recomendado utilizar `bcrypt.compareSync()` com senhas armazenadas como hashes.
+
+```js
+const query = "SELECT * FROM usuarios WHERE username = ? AND password = ?";
+```
+
+Sugestão segura:
+```js
+const query = "SELECT * FROM usuarios WHERE username = ?";
+db.query(query, [username], (err, results) => {
+  if (results.length === 0 || !bcrypt.compareSync(password, results[0].password)) {
+    return res.status(401).json({ success: false, error: "Usuário ou senha incorretos" });
+  }
+  // token...
+});
+```
+
+### 🌐 Conexão com o Banco de Dados
+
+```js
+const db = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: 'SUA_SENHA',
+  database: 'gas_alerts_db'
+});
+```
+
+Tabela esperada no banco de dados:
+
+```sql
+CREATE TABLE gas_alerts (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  gas_intensity FLOAT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+### 🔧 Execução
+
+1. Inicie o servidor:
+```bash
+node index.js
+```
+
+2. O servidor estará disponível no IP local, por exemplo:
+```
+Servidor rodando em http://192.168.1.100:3000
+```
+
+### 💡 Extras
+
+- Função para detectar o IP local automaticamente com o módulo `os`
+- Comando útil para limpar a tabela de alertas:
+```sql
+TRUNCATE TABLE gas_alerts;
+```
